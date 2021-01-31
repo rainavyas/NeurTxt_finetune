@@ -1,5 +1,5 @@
 import torch
-from transformers import *
+from transformers import BertModel
 
 class NeurTxt(torch.nn.Module):
     def __init__(self):
