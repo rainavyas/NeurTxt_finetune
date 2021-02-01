@@ -7,7 +7,7 @@ class NeurTxt(torch.nn.Module):
         BERT_DIM = 768
         self.bert_model = BertModel.from_pretrained('bert-base-uncased')
         self.bert_model.train()
-        fcc = torch.nn.Linear(BERT_DIM, 1)
+        self.fcc = torch.nn.Linear(BERT_DIM, 1)
 
     def forward(self, X, mask):
         '''

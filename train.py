@@ -3,8 +3,11 @@ import os
 import argparse
 import torch
 from transformers import BertTokenizer
-from models import NeurTxt_finetune
+from models import NeurTxt
 import time
+import json
+from torch.utils.data import TensorDataset
+from torch.utils.data import DataLoader
 
 def get_default_device():
     if torch.cuda.is_available():
@@ -203,8 +206,8 @@ y_train = y[validation_size:]
 y_val = y[:validation_size]
 
 # Store as a dataset
-train_ds = TensorDataset(X_train, M_train, y_train)
-val_ds = TensorDataset(X_val, M_val, y_val)
+train_ds = TensorDataset(X_train, mask_train, y_train)
+val_ds = TensorDataset(X_val, mask_val, y_val)
 
 # Use dataloader to handle batches easily
 batch_size = 50
@@ -212,11 +215,11 @@ train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True)
 val_dl = DataLoader(val_ds, batch_size=batch_size, shuffle=True)
 
 # Training algorithm
-lr = 8*1e-2
+lr = 8*1e-4
 epochs = 20
 sch = 0.985
 
-model = NeurTxt_finetune()
+model = NeurTxt()
 model.to(device)
 criterion = torch.nn.MSELoss(reduction='mean')
 optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum = 0.9, nesterov=True)
